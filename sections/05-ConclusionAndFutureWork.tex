@@ -1,0 +1,17 @@
+\section{Conclusion and Future Work}
+
+We concluded it was worth it.
+Mechanical Turk showed that a human did not "see" our noisy pattern as rain.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% On the inadequacy of the Goodness-of-Steer metric
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+The quantitative evaluation metric $g_s$ (\ref{eq:goodness_of_steer}) proposed in this study proved to accurately reflect qualitative analysis for dry weather self-driving, as the best observed model obtained the best $g_s$ score (table  \ref{fig:genTrackOneLap_logs_Wed_Nov_25_23_39_22_2020_ground_truth_steering_angles}, row 1). For wet weather it proved inadequate. 
+% maybe move this bit to discussion
+The nvidia1 model, known to crash when running real time predictions in all rain conditions with intensity multiplier 1 and 4 (Figures
+\ref{fig:sa_GeneratedTrackintensitymultiplier1_20201207091932_nvidia1} and  \ref{fig:sa_GeneratedTrackintensitymultiplier4_20201207091932_nvidia1}), obtained better $g_s$ scores (rows 5, 6 and 7) in the rain than the nvidia2 model (rows 2, 3, 4) for SDSandbox log data (not self-driving in real time) on the Generated Track. On the Generated Road, nvidia2 outperformed nvidia1 for all weather. The original expectation was the $g_s$ score being able to generate lower scores for the best performing model in all cases. A suggestion for future work is to evaluate a \textit{sliding window} approach as used in digital signal processing, where a sequence of frames is analysed at a time, the $g_s$ score for the sequence could then be noted, the window moved forward by one frame, and so on until the entire sequence is inspected. The expectation being that events such as nvidia1 model crashes shown in \ref{fig:sa_GeneratedTrackintensitymultiplier1_20201207091932_nvidia1} could be quantified by a higher-than-threshold $g_s$ score in the window sequence, each crash adding up into a penalty term. Also, the function name choice was unfortunate, as higher scores mean worse steering. An improved $G_s$ metric is suggested in \ref{eq:goodness_of_steer_improved_fixed_name}:
+\begin{equation}
+    \label{eq:goodness_of_steer_improved_fixed_name}
+    G_s(p,g) = \Bigg(\frac{\sum_i^N \lvert p(i)-g(i) \rvert }{N} \times n_c + C_c\Bigg)^{-1}
+\end{equation}
+where $C_c$ is the crash count penalty term, and the exponentiation leads to lower results translating into higher scores.
